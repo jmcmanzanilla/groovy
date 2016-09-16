@@ -18,8 +18,8 @@ generateBuildPackage.with {
 	scm {
 		git {
 			remote {
-				url("http://gitlab/gitlab/dockerwhale/Project-Simulation.git")
-				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
+				url("git@gitlab:${WORKSPACE_NAME}Project-Simulation.git")
+				credentials('adop-jenkins-master')
 			}
 			branch('*/master')
 		}
