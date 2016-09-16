@@ -22,9 +22,9 @@ generateBuildPackage.with {
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
 			branch('*/master')
-        }
+		}
 	}
-  	wrappers {
+	wrappers {
 		preBuildCleanup()
 		timestamps()
 	}
@@ -39,13 +39,13 @@ generateBuildPackage.with {
 			addVoteOnMergeRequest(true)
 			useCiFeatures(false)
 			acceptMergeRequestOnSuccess(false)
-          	addNoteOnMergeRequest(true)
+			addNoteOnMergeRequest(true)
 		}
 	}
 	steps {
 		maven {
 			mavenInstallation('ADOP Maven')
-				goals('clean package')
+			goals('clean package')
 			rootPOM('SampleWebApp/pom.xml')	
 		}
 	}
@@ -61,20 +61,18 @@ generateBuildPackage.with {
 	}
 }
 
-generateCodeAnalysis.with{
+generateCodeAnalysis.with {
 	customWorkspace('$CUSTOM_WORKSPACE')
-  	properties {
-        copyArtifactPermissionProperty {
-           	projectNames('Code_Deployment')
+	properties {
+		copyArtifactPermissionProperty {
+			projectNames('Code_Deployment')
 		}
-    }
-  
-  	parameters {
-  		stringParam('CUSTOM_WORKSPACE', null, null)
-    }
+	}
+	parameters {
+		stringParam('CUSTOM_WORKSPACE', null, null)
+	}
 	steps {
-	
-    	sonarRunnerBuilder {
+		sonarRunnerBuilder {
 			jdk('Inherit from job')
 			project('SampleWebApp')
 			properties('''# Required metadata
@@ -95,9 +93,9 @@ sonar.sourceEncoding=UTF-8''')
 			javaOpts(null)
 			task(null)
 			additionalArguments(null)
-    	}
-    }
-	publishers{
+		}
+	}
+	publishers {
 		archiveArtifacts {
 			pattern('**/*.war')
 			onlyIfSuccessful(true)
@@ -116,7 +114,7 @@ sonar.sourceEncoding=UTF-8''')
 
 generateCodeDeployment.with{
 	label('ansible')
-    multiscm {
+	multiscm {
 		git {
 			remote {
 				url("http://gitlab/gitlab/dockerwhale/ansible.git")
@@ -124,34 +122,34 @@ generateCodeDeployment.with{
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
 			branch('*/master')
-          	relativeTargetDir('ansible')
+			relativeTargetDir('ansible')
 		}
-      	git {
+		git {
 			remote {
 				url("http://52.9.244.200/gitlab/dockerwhale/dockerfile_whale.git")
 				//url("https://github.com/jmcmanzanilla/dockerfile_whale.git")
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
 			branch('*/master')
-   	 	    relativeTargetDir('dockerfile')
+			relativeTargetDir('dockerfile')
 		}
 	}
   	wrappers {
-    	sshAgent('ec2-user')
-    }
-  
+	    	sshAgent('ec2-user')
+  	}
   	steps {
 		copyArtifacts('Code_Analysis') {
 			includePatterns('SampleWebApp/target/*.war')
 			buildSelector {
 				latestSuccessful(true)
 			}
-        }
+			
+		}
   		shell('''chmod 400 /workspace/Project_Sim/Code_Deployment/ansible/teamwhale.pem
 scp -i /workspace/Project_Sim/Code_Deployment/ansible/teamwhale.pem /workspace/Project_Sim/Code_Deployment/dockerfile/Dockerfile ec2-user@52.53.188.36:~/
 scp -i /workspace/Project_Sim/Code_Deployment/ansible/teamwhale.pem /workspace/Project_Sim/Code_Deployment/SampleWebApp/target/*.war ec2-user@52.53.188.36:~/
 ansible-playbook ansible/playbook.yml -i ansible/hosts -u ec2-user''')
-    }
+	}
 	publishers {
 		downstreamParameterized {
 			trigger('Web_Testing') {
@@ -159,8 +157,7 @@ ansible-playbook ansible/playbook.yml -i ansible/hosts -u ec2-user''')
 				triggerWithNoParameters(true)
 			}
 		}
-    }
-
+	}
 }
 
 generateWebTesting.with {
@@ -172,14 +169,14 @@ generateWebTesting.with {
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
 			branch('*/master')
-        }
+		}
 	}
 	parameters {
 		stringParam('CUSTOM_WORKSPACE', null, null)
 	}
 	triggers {
-    	snapshotDependencies(true)
-    }
-		rootPOM('WebTest/pom.xml')
-		goals('clean test')
+		snapshotDependencies(true)
+	}
+	rootPOM('WebTest/pom.xml')
+	goals('clean test')
 }
