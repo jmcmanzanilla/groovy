@@ -117,7 +117,7 @@ generateCodeDeployment.with{
 	multiscm {
 		git {
 			remote {
-				url("http://gitlab/gitlab/dockerwhale/ansible.git")
+				url("git@gitlab:${WORKSPACE_NAME}/ansible.git")
 				//url("https://github.com/jmcmanzanilla/ansible.git")
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
@@ -126,7 +126,7 @@ generateCodeDeployment.with{
 		}
 		git {
 			remote {
-				url("http://52.9.244.200/gitlab/dockerwhale/dockerfile_whale.git")
+				url("git@gitlab:${WORKSPACE_NAME}/dockerfile_whale.git")
 				//url("https://github.com/jmcmanzanilla/dockerfile_whale.git")
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
@@ -164,7 +164,7 @@ generateWebTesting.with {
 	scm {
 		git {
 			remote {
-				url("http://gitlab/gitlab/dockerwhale/testing_whale.git")
+				url("git@gitlab:${WORKSPACE_NAME}/testing_whale.git")
 				//url("https://github.com/jmcmanzanilla/testing_whale.git")
 				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
 			}
