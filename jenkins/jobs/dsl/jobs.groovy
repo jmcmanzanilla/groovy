@@ -18,7 +18,7 @@ generateBuildPackage.with {
 	scm {
 		git {
 			remote {
-				url("git@gitlab:${WORKSPACE_NAME}Project-Simulation.git")
+				url("git@gitlab:${WORKSPACE_NAME}/Project-Simulation.git")
 				credentials('adop-jenkins-master')
 			}
 			branch('*/master')
