@@ -119,7 +119,7 @@ generateCodeDeployment.with{
 			remote {
 				url("git@gitlab:${WORKSPACE_NAME}/ansible.git")
 				//url("https://github.com/jmcmanzanilla/ansible.git")
-				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
+				credentials('adop-jenkins-master')
 			}
 			branch('*/master')
 			relativeTargetDir('ansible')
@@ -128,7 +128,7 @@ generateCodeDeployment.with{
 			remote {
 				url("git@gitlab:${WORKSPACE_NAME}/dockerfile_whale.git")
 				//url("https://github.com/jmcmanzanilla/dockerfile_whale.git")
-				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
+				credentials('adop-jenkins-master')
 			}
 			branch('*/master')
 			relativeTargetDir('dockerfile')
@@ -166,7 +166,7 @@ generateWebTesting.with {
 			remote {
 				url("git@gitlab:${WORKSPACE_NAME}/testing_whale.git")
 				//url("https://github.com/jmcmanzanilla/testing_whale.git")
-				credentials('cf9f3de3-5930-476f-9673-0d56208e7a62')
+				credentials('adop-jenkins-master')
 			}
 			branch('*/master')
 		}
